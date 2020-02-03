@@ -19,7 +19,7 @@ interface Route {
   addToApp(app: App): void;
 }
 
-class RouteImp implements Route{
+class ExpressRoute implements Route{
   method: Method;
   path: Path;
   handler: Handler;
@@ -43,7 +43,7 @@ class RouteImp implements Route{
 }
 
 const defaultRoutes: Route[] = [
-    new RouteImp(Method.GET, "/keyResult", function(req, res){
+    new ExpressRoute(Method.GET, "/keyResult", function(req, res){
       res.send("hello world");
     }),
 ];
@@ -54,4 +54,4 @@ function wire(app: App, routes: Route[] = defaultRoutes): void {
   });
 }
 
-export {Method, Path, Handler, Route, App, RouteImp, wire};
+export {Method, Path, Handler, Route, App, ExpressRoute, wire};
