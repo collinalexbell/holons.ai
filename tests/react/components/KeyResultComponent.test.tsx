@@ -8,6 +8,6 @@ describe('KeyResultComponent', () => {
   const description = "the test passes";
   const kr = shallow(<KeyResultComponent description={description}/>);
   it('displays a description', () => {
-    expect(kr).toHaveText(description);
+    expect(kr.find(".key-result-description-text")).toHaveText(description);
   });
 });

@@ -14,6 +14,9 @@ app.get('/bundle.js', (req: express.Request, res: express.Response) => {
   console.log('foo');
   res.sendFile(path.resolve('./dist/bundle.js'));
 });
+app.get('/bootstrap.css', (req: express.Request, res: express.Response) => {
+  res.sendFile(path.resolve('./node_modules/bootstrap/dist/css/bootstrap.css'));
+});
 
 wire(app);
 

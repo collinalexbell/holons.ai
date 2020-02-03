@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import KeyResultComponent from "./components/KeyResultComponent";
 
 ReactDOM.render(
-    <h1>Hello derp</h1>,
+    <KeyResultComponent description="render key result"/>,
     document.getElementById('root'),
 );
 
