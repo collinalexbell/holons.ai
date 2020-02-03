@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-import routes from './routes';
+import {wire} from './routes';
 
 const app = express();
 const port = 4242;
@@ -15,6 +15,6 @@ app.get('/bundle.js', (req: express.Request, res: express.Response) => {
   res.sendFile(path.resolve('./dist/bundle.js'));
 });
 
-routes(app);
+wire(app);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

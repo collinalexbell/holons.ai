@@ -1,11 +1,25 @@
-import {Express, Request, Response} from 'express';
+import {Request, Response} from "express";
 
 enum Method {GET, POST}
 
 type Path = string;
+
 type Handler = (req: Request, res: Response) => void;
 
-class Route {
+interface App {
+  // Interface works with Express and this is the express type.
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get: (path: Path, handler: Handler) => any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  post: (path: Path, handler: Handler) => any;
+}
+
+interface Route {
+  addToApp(app: App): void;
+}
+
+class RouteImp implements Route{
   method: Method;
   path: Path;
   handler: Handler;
@@ -15,8 +29,9 @@ class Route {
     this.handler = handler;
   }
 
-  addToApp(app: Express) {
-    switch(this.method) {
+  addToApp(app: App): void {
+    const {method: method1} = this;
+    switch(method1) {
       case Method.GET:
         app.get(this.path, this.handler);
         break;
@@ -27,16 +42,16 @@ class Route {
   }
 }
 
-const routes: Route[] = [
-    new Route(Method.GET, "/keyResult", function(req, res){
+const defaultRoutes: Route[] = [
+    new RouteImp(Method.GET, "/keyResult", function(req, res){
       res.send("hello world");
     }),
 ];
 
-function wireRoutes(app: Express): void {
+function wire(app: App, routes: Route[] = defaultRoutes): void {
   routes.forEach((val) => {
     val.addToApp(app);
   });
 }
 
-export default wireRoutes
+export {Method, Path, Handler, Route, App, RouteImp, wire};

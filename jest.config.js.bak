@@ -1,0 +1,34 @@
+// For a detailed explanation regarding each configuration property, visit:
+// https://jestjs.io/docs/en/configuration.html
+
+module.exports = {
+  automock: true,
+  //moduleFileExtensions: ['js', 'ts', 'tsx'],
+  globals: {
+    "ts-jest": {
+      "tsConfigFile": "tsconfig.json"
+    }
+  },
+  projects: [
+    {
+      displayName: "server",
+      testEnvironment: 'node',
+      testMatch: [
+        "**/server/*.test.+(ts|tsx|js)"
+      ],
+      transform: {
+        "^.+\\.(ts|tsx)$": "ts-jest"
+      }
+    },
+    {
+      displayName: "react",
+      testEnvironment: 'jsdom',
+      testMatch: [
+        "**/react/*test.+(ts|tsx|js)"
+      ],
+      transform: {
+        "^.+\\.(ts|tsx)$": "ts-jest"
+      },
+    }
+  ]
+};
