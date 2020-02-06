@@ -4,8 +4,8 @@ import {shallow, ShallowWrapper} from 'enzyme';
 import 'jest-enzyme'
 jest.unmock("../../../src/react/components/ScoreComponent");
 
-function componentWithValue (val: string): ShallowWrapper<ScoreComponent, Readonly<{}>, React.Component<{}, {}>> {
-  return shallow(<ScoreComponent score={parseFloat(val)}/>);
+function componentWithValue (val: number | string): ShallowWrapper<ScoreComponent, Readonly<{}>, React.Component<{}, {}>> {
+  return shallow(<ScoreComponent score={parseFloat(val.toString())}/>);
 }
 
 describe("ScoreComponent", () => {
@@ -50,5 +50,23 @@ describe("ScoreComponent", () => {
         });
       });
     });
-  })
+    describe('with scoreValue of 0.4-0.69', () => {
+      const lowVal = 0.4;
+      const highVal = 0.69;
+      const low = componentWithValue(lowVal);
+      const high = componentWithValue(highVal);
+
+      it('should have class "score-middling' , () => {
+        expect(low).toHaveClassName('score-middling');
+        expect(high).toHaveClassName('score-middling');
+      });
+
+      it('should have the color of yellow', () => {
+        const lowIconStyle = low.find('.score-icon').prop('css');
+        const highIconStyle = high.find('.score-icon').prop('css');
+        expect(lowIconStyle).toHaveProperty('background', 'yellow');
+        expect(highIconStyle).toHaveProperty('background', 'yellow');
+      });
+    });
+  });
 });
