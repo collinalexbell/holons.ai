@@ -52,6 +52,7 @@ function wire(app: App, routes: Route[] = defaultRoutes): void {
   routes.forEach((val) => {
     val.addToApp(app);
   });
+
 }
 
 export {Method, Path, Handler, Route, App, ExpressRoute, wire};

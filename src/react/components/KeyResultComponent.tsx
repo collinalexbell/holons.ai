@@ -1,20 +1,18 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React, {ReactNode} from 'react';
+import ScoreComponent from "./ScoreComponent";
 
-const keyResultDescriptionLabelStyle = {display:'inline'};
 const keyResultDescriptionTextStyle = {display:'inline'};
 
-class KeyResultComponent extends React.Component<{description: string}, {}>  {
+class KeyResultComponent extends React.Component<{description: string; score: number}, {}>  {
   render(): ReactNode {
     return (
         <div className="key-result-description">
-          <div className="key-result-description-label" css={keyResultDescriptionLabelStyle}>
-            Description:&nbsp;
-          </div>
           <div className="key-result-description-text" css={keyResultDescriptionTextStyle}>
             {this.props.description}
           </div>
+          <ScoreComponent score={this.props.score} />
         </div>
     );
   }
