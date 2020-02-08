@@ -1,11 +1,11 @@
-import ScoreComponent from '../../../src/react/components/ScoreComponent';
-import React from "react";
+import {ScoreComponent} from '../../src/react/Score';
+import React, {ChangeEvent} from "react";
 import {shallow, ShallowWrapper} from 'enzyme';
 import 'jest-enzyme'
-jest.unmock("../../../src/react/components/ScoreComponent");
+jest.unmock("../../src/react/Score");
 
 function componentWithValue (val: number | string): ShallowWrapper<ScoreComponent, Readonly<{}>, React.Component<{}, {}>> {
-  return shallow(<ScoreComponent score={parseFloat(val.toString())}/>);
+  return shallow(<ScoreComponent score={parseFloat(val.toString())} /*scoreChange={scoreChange}*/ />);
 }
 
 describe("ScoreComponent", () => {
@@ -14,7 +14,7 @@ describe("ScoreComponent", () => {
     const score = componentWithValue(scoreValue);
     it("should have a .score-icon that is a circle, rendered in css", () => {
       const style = score.find(".score-icon").prop('css');
-      expect(style).toHaveProperty('border-radius', '50%');
+      expect(style).toHaveProperty('borderRadius', '50%');
       expect(style).toHaveProperty('height');
       expect(style).toHaveProperty('width');
       expect(style).toHaveProperty('background');
@@ -31,7 +31,7 @@ describe("ScoreComponent", () => {
 
       expect(scoreIconStyle).toHaveProperty('display', 'inline-block');
       expect(scoreValueStyle).toHaveProperty('display', 'inline');
-      expect(scoreIconStyle).toHaveProperty('margin-right');
+      expect(scoreIconStyle).toHaveProperty('marginRight');
     });
   });
 

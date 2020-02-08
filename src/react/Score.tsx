@@ -1,6 +1,8 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React, {ReactNode} from 'react';
+import State from './State'
+import {connect} from "react-redux";
 
 const scoreIconDiameter = '10px';
 
@@ -28,12 +30,12 @@ class ScoreComponent extends React.Component<{score: number}, {}> {
     };
 
     return {
-      'border-radius': '50%',
+      borderRadius: '50%',
       height: scoreIconDiameter,
       width: scoreIconDiameter,
       background: background(),
       display: 'inline-block',
-      'margin-right': '2px'
+      marginRight: '2px'
     };
   };
 
@@ -53,4 +55,20 @@ class ScoreComponent extends React.Component<{score: number}, {}> {
   };
 }
 
-export default ScoreComponent;
+const ScoreComponentModules  = {
+  mapStateToProps: (state: State, ownProps: {id: number}): {score: number} => {
+    return {
+      score: state.KeyResults[ownProps.id].score
+    }
+  },
+  mapDispatchToProps: (): {} => {
+    return {};
+  }
+};
+
+const Score = connect(
+    ScoreComponentModules.mapStateToProps,
+    ScoreComponentModules.mapDispatchToProps
+)(ScoreComponent);
+
+export {ScoreComponent, Score}
