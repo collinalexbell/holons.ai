@@ -1,11 +1,14 @@
 import {ScoreComponent} from '../../src/react/Score';
-import React, {ChangeEvent} from "react";
-import {shallow, ShallowWrapper} from 'enzyme';
+import React from "react";
+import {shallow, ShallowWrapper, mount, ReactWrapper} from 'enzyme';
 import 'jest-enzyme'
 jest.unmock("../../src/react/Score");
 
 function componentWithValue (val: number | string): ShallowWrapper<ScoreComponent, Readonly<{}>, React.Component<{}, {}>> {
-  return shallow(<ScoreComponent score={parseFloat(val.toString())} /*scoreChange={scoreChange}*/ />);
+  return shallow(<ScoreComponent
+      score={parseFloat(val.toString())}
+      updateScore={jest.fn()}
+  />);
 }
 
 describe("ScoreComponent", () => {
@@ -67,6 +70,32 @@ describe("ScoreComponent", () => {
         expect(lowIconStyle).toHaveProperty('background', 'yellow');
         expect(highIconStyle).toHaveProperty('background', 'yellow');
       });
+    });
+  });
+  describe('when .score-value is clicked', () => {
+    let score: ReactWrapper;
+    const updateScore = jest.fn();
+    beforeEach( () => {
+      score =  mount(<ScoreComponent
+          score={parseFloat('0.5')}
+          updateScore={updateScore}
+      />)
+    }) ;
+    it('renders an input form', () => {
+      //at(1) because EmotionJS wraps the element in something with the same class
+      const scoreVal = score.find('.score-value').hostNodes();
+      scoreVal.simulate('click');
+      expect(score.find('input')).toExist()
+    });
+
+    it('calls updateScore with new value', () => {
+      //at(1) because EmotionJS wraps the element in something with the same class
+      const scoreVal = score.find('.score-value').hostNodes();
+      scoreVal.simulate('click');
+      const input = score.find('input');
+      input.simulate('change', {target: {value: '0.6'}});
+      input.simulate('keyDown', {key: "Enter"});
+      expect(updateScore).toBeCalledWith(0.6);
     });
   });
 });

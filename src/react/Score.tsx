@@ -93,8 +93,8 @@ class ScoreComponent extends React.Component<ScoreComponentProps, {editingScore:
     } else {
       return (
           <div className='score-value'
-               css={scoreValueStyle}
                onClick={this.editScore}
+               css={scoreValueStyle}
           >
             {this.props.score}
           </div>
