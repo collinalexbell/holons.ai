@@ -2,8 +2,8 @@
 import { jsx } from '@emotion/core'
 import React, {ReactNode} from 'react';
 import {Score} from "./Score";
-import {connect, DispatchProp} from "react-redux";
-import State from "./State";
+import {connect} from "react-redux";
+import {State} from "./State";
 import KeyResultModel from "../common/KeyResult";
 
 const keyResultDescriptionTextStyle = {display:'inline'};

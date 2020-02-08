@@ -1,7 +1,9 @@
 import KeyResult from "../common/KeyResult";
 
+type KeyResults = {[key: number]: KeyResult}
+
 interface State {
-  KeyResults: {[key: number]: KeyResult};
+  KeyResults: KeyResults;
 }
 
-export default State
+export {KeyResults, State}

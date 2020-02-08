@@ -1,6 +1,7 @@
+type ID = number
 
 class KeyResult {
-  id: number;
+  id: ID;
   score: number;
   description: string;
 
@@ -12,3 +13,4 @@ class KeyResult {
 }
 
 export default KeyResult;
+export {ID}
