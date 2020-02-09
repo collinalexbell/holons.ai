@@ -2,10 +2,10 @@ import * as React from 'react';
 import {createStore, combineReducers} from 'redux'
 import * as ReactDOM from 'react-dom';
 import KeyResultModel from '../common/KeyResult'
-import {KeyResult} from "./KeyResult";
 import {Provider} from "react-redux";
 import {State} from './State'
 import {keyResultsReducer} from "./redux/KeyResultsReducer";
+import {ObjectiveComponent} from "./Objective";
 
 const reducer = combineReducers({
   KeyResults: keyResultsReducer
@@ -25,9 +25,9 @@ const store = createStore(reducer, init);
 
 ReactDOM.render(
     <Provider store={store}>
-      <KeyResult id={0} />
-      <KeyResult id={1} />
-      <KeyResult id={2} />
+      <ObjectiveComponent description='passing' krIds={[0, 1]}/>
+      <ObjectiveComponent description='failing' krIds={[2]}/>
+      <ObjectiveComponent description='noKRs' krIds={[]}/>
     </Provider>,
     document.getElementById('root'),
 );
