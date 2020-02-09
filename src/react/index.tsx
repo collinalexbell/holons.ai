@@ -25,9 +25,9 @@ const store = createStore(reducer, init);
 
 ReactDOM.render(
     <Provider store={store}>
-      <ObjectiveComponent description='passing' krIds={[0, 1]}/>
-      <ObjectiveComponent description='failing' krIds={[2]}/>
-      <ObjectiveComponent description='noKRs' krIds={[]}/>
+      <ObjectiveComponent description='passing' krIds={[0, 1]} hideKRs={true}/>
+      <ObjectiveComponent description='failing' krIds={[2]} hideKRs={true}/>
+      <ObjectiveComponent description='noKRs' krIds={[]} hideKRs={true}/>
     </Provider>,
     document.getElementById('root'),
 );
