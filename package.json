@@ -22,6 +22,7 @@
     "@types/react-redux": "^7.1.7",
     "@types/redux": "^3.6.0",
     "bootstrap": "^4.4.1",
+    "calculess": "^1.0.2",
     "concurrently": "^5.1.0",
     "express": "^4.17.1",
     "jest-enzyme": "^7.1.2",
