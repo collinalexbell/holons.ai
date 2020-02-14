@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React, {ReactNode} from 'react';
-import {Score} from "./Score";
+import {ScoreLocation, Score} from "./Score";
 import {connect} from "react-redux";
 import {State} from "./State";
 import KeyResultModel from "../common/KeyResult";
@@ -15,7 +15,7 @@ class KeyResultComponent extends React.Component<{id: number; description: strin
           <div className="key-result-description-text" css={keyResultDescriptionTextStyle}>
             {this.props.description}
           </div>
-          <Score id={this.props.id}/>
+          <Score id={this.props.id} parentType={ScoreLocation.KeyResult}/>
         </div>
     );
   }
