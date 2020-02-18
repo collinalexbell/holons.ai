@@ -5,7 +5,6 @@ import {State} from './State'
 import {connect} from "react-redux";
 import {Dispatch} from 'redux';
 import {updateKeyResultScore} from "./redux/KeyResultsReducer";
-import Objective from "../common/Objective";
 
 const scoreIconDiameter = '10px';
 
@@ -113,7 +112,7 @@ class ScoreComponent extends React.Component<ScoreComponentProps, {editingScore:
   };
 }
 
-export enum ScoreLocation {Objective, KeyResult};
+export enum ScoreLocation {Objective, KeyResult}
 
 interface OwnProps {
   id: number;
@@ -131,7 +130,7 @@ const ScoreComponentModules  = {
         return {score: 0};
     }
     return {
-      score: sourceList[ownProps.id].score
+      score: sourceList[ownProps.id].score()
     }
   },
   mapDispatchToProps: (dispatch: Dispatch, ownProps: OwnProps): DispatchProps => {

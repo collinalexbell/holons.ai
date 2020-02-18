@@ -1,33 +1,51 @@
 import * as React from 'react';
 import {createStore, combineReducers} from 'redux'
 import * as ReactDOM from 'react-dom';
-import KeyResultModel from '../common/KeyResult'
+import KeyResult, {KeyResultStubbed, KeyResultInMem} from '../common/KeyResult'
+import ObjectiveModel from '../common/Objective'
 import {Provider} from "react-redux";
 import {State} from './State'
-import {keyResultsReducer} from "./redux/KeyResultsReducer";
-import {ObjectiveComponent} from "./Objective";
+import {keyResultsReducer, addKeyResultAction} from "./redux/KeyResultsReducer";
+import OkrList from "./OkrList";
+import objectiveReducer, {addObjectiveAction} from "./redux/ObjectiveReducer";
 
 const reducer = combineReducers({
-  KeyResults: keyResultsReducer
+  KeyResults: keyResultsReducer,
+  Objectives: objectiveReducer
 });
 
+
+
 const init: State = {
-  KeyResults: {
-    0: new KeyResultModel(0, 0.7, "This is passing"),
-    1: new KeyResultModel(1, 0.6, "This is middling"),
-    2: new KeyResultModel(2, 0.3, "This is failing"),
-  }
+  KeyResults: {},
+  Objectives: []
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 const store = createStore(reducer, init);
 
+function krResolver(id: number): KeyResult {
+  const state: State = store.getState();
+  return state.KeyResults[id];
+}
+
+store.dispatch(addKeyResultAction(new KeyResultInMem(0, 0.7, 'passing')));
+store.dispatch(addKeyResultAction(new KeyResultInMem(1, 0.5, 'middling')));
+store.dispatch(addKeyResultAction(new KeyResultInMem(2, 0.3, 'failing')));
+
+store.dispatch(addObjectiveAction(new ObjectiveModel(0, 'passing')
+    .addKR(new KeyResultStubbed(0, krResolver))
+    .addKR(new KeyResultStubbed(1, krResolver))));
+
+store.dispatch(addObjectiveAction(new ObjectiveModel(1, 'failing')
+    .addKR(new KeyResultStubbed(2, krResolver))));
+
+store.dispatch(addObjectiveAction(new ObjectiveModel(2, 'noKRs')));
+
 ReactDOM.render(
     <Provider store={store}>
-      <ObjectiveComponent description='passing' krIds={[0, 1]} hideKRs={true}/>
-      <ObjectiveComponent description='failing' krIds={[2]} hideKRs={true}/>
-      <ObjectiveComponent description='noKRs' krIds={[]} hideKRs={true}/>
+      <OkrList />
     </Provider>,
     document.getElementById('root'),
 );

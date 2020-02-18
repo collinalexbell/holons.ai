@@ -1,10 +1,10 @@
 import Objective from "../../src/common/Objective";
-import KeyResult from "../../src/common/KeyResult";
+import KeyResult, {KeyResultInMem} from "../../src/common/KeyResult";
 
 describe('Objective', () => {
   let objective: Objective;
   beforeEach(() => {
-    objective = new Objective('test objectives')
+    objective = new Objective(0, 'test')
   });
   it('should be creatable', () => {
     expect(objective).not.toBeNull();
@@ -14,8 +14,8 @@ describe('Objective', () => {
   });
   describe('with keyResults', () => {
     const krs: KeyResult[] = [
-      new KeyResult(0, 0.3, "example"),
-      new KeyResult(1, 0.7, "example2")
+      new KeyResultInMem(0, 0.3, "example"),
+      new KeyResultInMem(1, 0.7, "example2")
     ];
     beforeEach(() => {
       objective.addKR(krs[0]);
@@ -37,7 +37,7 @@ describe('Objective', () => {
     describe('score', () => {
       it('should compute the average of all the KRs scores', () => {
         expect(objective.score()).toBeCloseTo(0.5, 2);
-        objective.addKR(new KeyResult(200, 1, 'perfect'));
+        objective.addKR(new KeyResultInMem(200, 1, 'perfect'));
         expect(objective.score()).toBeCloseTo(0.666, 2)
       });
     });

@@ -1,5 +1,8 @@
 import {KeyResult} from "./KeyResult";
 import React, {ReactNode} from "react";
+import {connect} from "react-redux";
+import ObjectiveModel from "../common/Objective"
+import {State} from "./State";
 
 interface ObjectiveComponentProps {
   description: string; krIds: number[]; hideKRs?: boolean;
@@ -80,5 +83,26 @@ class ObjectiveComponent extends React.Component<ObjectiveComponentProps, {hideK
   }
 }
 
-export {ObjectiveComponent}
+interface ObjectiveContainerProps {
+  id: number;
+}
+
+class ObjectiveContainerMethods {
+  static mapStateToProps = (state: State, ownProps: ObjectiveContainerProps): ObjectiveModel => {
+    const objective =  state.Objectives[ownProps.id];
+    return Object.assign({}, objective, objective.getKRs());
+  };
+
+  static mapDispatchToProps: {} = () => {
+    return {};
+  };
+}
+
+const Objective = connect<ObjectiveModel, {}, ObjectiveContainerProps, State>(
+    ObjectiveContainerMethods.mapStateToProps,
+    ObjectiveContainerMethods.mapDispatchToProps
+)(ObjectiveComponent);
+
+
+export {ObjectiveComponent, Objective}
 

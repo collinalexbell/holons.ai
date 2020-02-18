@@ -1,9 +1,12 @@
-import KeyResult from "../common/KeyResult";
+import {KeyResultInMem} from "../common/KeyResult";
+import Objective from "../common/Objective";
 
-type KeyResults = {[key: number]: KeyResult}
+type KeyResults = {[key: number]: KeyResultInMem}
+type Objectives = Objective[]
 
 interface State {
   KeyResults: KeyResults;
+  Objectives: Objectives;
 }
 
-export {KeyResults, State}
+export {Objectives, KeyResults, State}

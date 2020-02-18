@@ -4,10 +4,14 @@ import React, {ReactNode} from 'react';
 import {ScoreLocation, Score} from "./Score";
 import {connect} from "react-redux";
 import {State} from "./State";
-import KeyResultModel from "../common/KeyResult";
 
 const keyResultDescriptionTextStyle = {display:'inline'};
 
+interface KeyResultComponentProps {
+  id: number;
+  description: string;
+  score: number;
+}
 class KeyResultComponent extends React.Component<{id: number; description: string; score: number}, {}>  {
   render(): ReactNode {
     return (
@@ -26,8 +30,9 @@ interface KeyResultContainerProps {
 }
 
 class KeyResultContainerMethods {
-  static mapStateToProps = (state: State, ownProps: KeyResultContainerProps): KeyResultModel => {
-    return Object.assign({}, state.KeyResults[ownProps.id]);
+  static mapStateToProps = (state: State, ownProps: KeyResultContainerProps): KeyResultComponentProps => {
+    const kr = state.KeyResults[ownProps.id];
+    return {id: kr.id(), description: kr.description(), score: kr.score()};
   };
 
   static mapDispatchToProps: {} = () => {
@@ -35,7 +40,7 @@ class KeyResultContainerMethods {
   };
 }
 
-const KeyResult = connect<KeyResultModel, {}, KeyResultContainerProps, State>(
+const KeyResult = connect<KeyResultComponentProps, {}, KeyResultContainerProps, State>(
     KeyResultContainerMethods.mapStateToProps,
     KeyResultContainerMethods.mapDispatchToProps
 )(KeyResultComponent);
