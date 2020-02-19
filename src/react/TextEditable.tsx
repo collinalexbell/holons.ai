@@ -14,7 +14,7 @@ class TextEditable extends React.Component<TextEditableProps, TextEditableState>
   constructor(props: TextEditableProps) {
     super(props);
     if(this.props.children)
-      this.state = {text: this.props.children.toString(), editing: false};
+      this.state = {text: this.props.children.toString(), editing: !!this.props.children.toString()};
     this.startEdit = this.startEdit.bind(this);
     this.inputHandler = this.inputHandler.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
@@ -30,13 +30,16 @@ class TextEditable extends React.Component<TextEditableProps, TextEditableState>
 
   handleEnter(event: KeyboardEvent<HTMLInputElement>): void {
     if(event.key === "Enter") {
-      this.setState((state) => Object.assign({}, state, {editing: false}));
-      this.props.onChange(event.currentTarget.value);
+      if(event.currentTarget.value !== '') {
+        this.setState((state) => Object.assign({}, state, {editing: false}));
+        this.props.onChange(event.currentTarget.value);
+      }
     }
   }
 
   renderText(): ReactNode {
     if(this.state.editing){
+      console.log('rerender editing');
       return (
           <input className='score-value'
                  autoFocus={true}
@@ -47,6 +50,7 @@ class TextEditable extends React.Component<TextEditableProps, TextEditableState>
           />
       );
     } else {
+      console.log('rerender non-editing');
       return (
           <div
               onClick={this.startEdit}
