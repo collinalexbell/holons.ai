@@ -1,11 +1,17 @@
 import {KeyResult} from "./KeyResult";
 import React, {ReactNode} from "react";
+import {Dispatch} from 'redux';
 import {connect} from "react-redux";
 import ObjectiveModel from "../common/Objective"
 import {State} from "./State";
+import {TextEditable} from "./TextEditable";
+import {editObjectiveDescriptionAction} from "./redux/ObjectiveReducer";
 
 interface ObjectiveComponentProps {
-  description: string; krIds: number[]; hideKRs?: boolean;
+  description: string;
+  krIds: number[];
+  hideKRs?: boolean;
+  editDescription: (newDescription: string) => void;
 }
 class ObjectiveComponent extends React.Component<ObjectiveComponentProps, {hideKRs: boolean}> {
   constructor(props: ObjectiveComponentProps) {
@@ -60,6 +66,7 @@ class ObjectiveComponent extends React.Component<ObjectiveComponentProps, {hideK
           <div style={{display: 'inline'}}>
             <ul className={'keyResults'}>
               {this.keyResultComponents()}
+              <i className="material-icons" style={{position: 'relative', left:'-30px', top:'6px'}}> add </i>
             </ul>
           </div>
       );
@@ -72,7 +79,13 @@ class ObjectiveComponent extends React.Component<ObjectiveComponentProps, {hideK
     return (
         <div style={this.componentCSS}>
           <div style={this.objectiveLabelCSS}>Objective:</div>
-          <div style={this.descriptionCSS} className={'description'}>{this.props.description}</div>
+          <TextEditable
+              style={this.descriptionCSS}
+              className={'description'}
+              onChange={this.props.editDescription}
+          >
+            {this.props.description}
+          </TextEditable>
           <div style={{display: 'block'}}>
             Key Results:
             {this.renderKeyResultToggle()}
@@ -93,12 +106,14 @@ class ObjectiveContainerMethods {
     return Object.assign({}, objective, objective.getKRs());
   };
 
-  static mapDispatchToProps: {} = () => {
-    return {};
+  static mapDispatchToProps = (dispatch: Dispatch, ownProps: ObjectiveContainerProps): {editDescription: (a: string) => void} => {
+    return {
+      editDescription: (newDescription: string) => dispatch(editObjectiveDescriptionAction(ownProps.id, newDescription))
+    };
   };
 }
 
-const Objective = connect<ObjectiveModel, {}, ObjectiveContainerProps, State>(
+const Objective = connect<ObjectiveModel, {editDescription: (a: string) => void}, ObjectiveContainerProps, State>(
     ObjectiveContainerMethods.mapStateToProps,
     ObjectiveContainerMethods.mapDispatchToProps
 )(ObjectiveComponent);

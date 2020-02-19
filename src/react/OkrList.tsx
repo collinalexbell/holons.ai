@@ -20,9 +20,14 @@ class OkrListComponent extends React.Component<OkrComponentProps, {}> {
   }
   render(): ReactNode {
     return (
-      <ul>
-        {this.getObjectives()}
-      </ul>
+        <div>
+          <i className="material-icons">
+            add
+          </i>
+          <ul>
+            {this.getObjectives()}
+          </ul>
+        </div>
     );
   }
 }
