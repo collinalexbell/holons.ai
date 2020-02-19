@@ -4,10 +4,14 @@ class Objective {
   id: number;
   description: string;
   keyResults: KeyResult[];
-  constructor(id: number, description: string) {
-    this.id = id;
+  constructor(description: string) {
+    this.id = -1;
     this.description = description ;
     this.keyResults = [];
+  }
+
+  setID(id: number): void {
+    this.id = id;
   }
 
   addKR(kr: KeyResult): Objective {

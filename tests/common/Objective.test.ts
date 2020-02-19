@@ -4,7 +4,7 @@ import KeyResult, {KeyResultInMem} from "../../src/common/KeyResult";
 describe('Objective', () => {
   let objective: Objective;
   beforeEach(() => {
-    objective = new Objective(0, 'test')
+    objective = new Objective( 'test')
   });
   it('should be creatable', () => {
     expect(objective).not.toBeNull();

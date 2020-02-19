@@ -34,14 +34,14 @@ store.dispatch(addKeyResultAction(new KeyResultInMem(0, 0.7, 'passing')));
 store.dispatch(addKeyResultAction(new KeyResultInMem(1, 0.5, 'middling')));
 store.dispatch(addKeyResultAction(new KeyResultInMem(2, 0.3, 'failing')));
 
-store.dispatch(addObjectiveAction(new ObjectiveModel(0, 'passing')
+store.dispatch(addObjectiveAction(new ObjectiveModel( 'passing')
     .addKR(new KeyResultStubbed(0, krResolver))
     .addKR(new KeyResultStubbed(1, krResolver))));
 
-store.dispatch(addObjectiveAction(new ObjectiveModel(1, 'failing')
+store.dispatch(addObjectiveAction(new ObjectiveModel('failing')
     .addKR(new KeyResultStubbed(2, krResolver))));
 
-store.dispatch(addObjectiveAction(new ObjectiveModel(2, 'noKRs')));
+store.dispatch(addObjectiveAction(new ObjectiveModel( 'noKRs')));
 
 ReactDOM.render(
     <Provider store={store}>
