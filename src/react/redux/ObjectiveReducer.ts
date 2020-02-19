@@ -29,6 +29,7 @@ export const objectiveReducer: Reducer<Objectives, Actions> = (state: Objectives
   const newState = state.slice();
   if (action.type === ADD_OBJECTIVE) {
     const update: OBJECTIVE_ADD_ACTION = action as OBJECTIVE_ADD_ACTION;
+    update.objective.setID(newState.length);
     newState.push(update.objective);
   } else if (action.type === EDIT_OBJECTIVE_DESCRIPTION) {
     const update:  ACTION_OBJECTIVE_EDIT_DESCRIPTION = action as ACTION_OBJECTIVE_EDIT_DESCRIPTION;

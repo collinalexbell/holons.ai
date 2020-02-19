@@ -1,11 +1,23 @@
 import React, {ReactNode} from "react";
+import {Dispatch} from 'redux';
 import ObjectiveModel from "../common/Objective";
 import {Objective} from './Objective';
 import {Objectives, State} from "./State";
 import {connect} from "react-redux";
+import {addObjectiveAction} from "./redux/ObjectiveReducer";
 
-interface OkrComponentProps {objectives: Objectives}
+interface OkrComponentProps {
+  objectives: Objectives;
+  addObjective: () => void;
+}
 class OkrListComponent extends React.Component<OkrComponentProps, {}> {
+  constructor(props: OkrComponentProps) {
+    super(props);
+    this.handleAdd = this.handleAdd.bind(this);
+  }
+  handleAdd(): void {
+    this.props.addObjective();
+  }
   getObjectives(): ReactNode[] {
     return this.props.objectives.map((objective: ObjectiveModel) => {
       return (
@@ -21,7 +33,10 @@ class OkrListComponent extends React.Component<OkrComponentProps, {}> {
   render(): ReactNode {
     return (
         <div>
-          <i className="material-icons">
+          <i
+              className="material-icons"
+              onClick={this.handleAdd}
+          >
             add
           </i>
           <ul>
@@ -38,12 +53,14 @@ class ContainerMethods {
     return {objectives: state.Objectives}
   };
 
-  static mapDispatchToProps: {} = () => {
-    return {};
+  static mapDispatchToProps = (dispatch: Dispatch): {addObjective: () => void} => {
+    return {
+      addObjective: () => dispatch(addObjectiveAction(new ObjectiveModel( '')))
+    };
   };
 }
 
-const OkrList = connect<OkrComponentProps, {}, {}, State>(
+const OkrList = connect<{objectives: Objectives}, {addObjective: () => void}, {}, State>(
     ContainerMethods.mapStateToProps,
     ContainerMethods.mapDispatchToProps
 )(OkrListComponent);

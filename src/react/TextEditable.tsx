@@ -14,7 +14,9 @@ class TextEditable extends React.Component<TextEditableProps, TextEditableState>
   constructor(props: TextEditableProps) {
     super(props);
     if(this.props.children)
-      this.state = {text: this.props.children.toString(), editing: !!this.props.children.toString()};
+      this.state = {text: this.props.children.toString(), editing: false};
+    else
+      this.state = {text: '', editing: true};
     this.startEdit = this.startEdit.bind(this);
     this.inputHandler = this.inputHandler.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
