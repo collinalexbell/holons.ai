@@ -1,5 +1,11 @@
 type ID = number
 
+let id = -1;
+
+function getNewId(): number {
+  return ++id;
+}
+
 interface KeyResult {
   id(): ID;
   score(): number;
@@ -41,8 +47,8 @@ class KeyResultInMem {
   _score: number;
   _description: string;
 
-  constructor(id: number, score: number, description: string) {
-    this._id = id;
+  constructor(score: number, description: string) {
+    this._id = getNewId();
     this._score = score;
     this._description = description;
   }
@@ -59,8 +65,16 @@ class KeyResultInMem {
     return this._score;
   }
 
+  setDescription(description: string): void {
+    this._description = description;
+  }
+
   description(): string {
     return this._description;
+  }
+
+  toStubbed(): KeyResultStubbed {
+    return new KeyResultStubbed(this._id, () => this)
   }
 }
 

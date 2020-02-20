@@ -25,14 +25,14 @@ const init: State = {
 // @ts-ignore
 const store = createStore(reducer, init);
 
-function krResolver(id: number): KeyResult {
+export function krResolver(id: number): KeyResult {
   const state: State = store.getState();
   return state.KeyResults[id];
 }
 
-store.dispatch(addKeyResultAction(new KeyResultInMem(0, 0.7, 'passing')));
-store.dispatch(addKeyResultAction(new KeyResultInMem(1, 0.5, 'middling')));
-store.dispatch(addKeyResultAction(new KeyResultInMem(2, 0.3, 'failing')));
+store.dispatch(addKeyResultAction(new KeyResultInMem(0.7, 'passing')));
+store.dispatch(addKeyResultAction(new KeyResultInMem(0.5, 'middling')));
+store.dispatch(addKeyResultAction(new KeyResultInMem(0.3, 'failing')));
 
 store.dispatch(addObjectiveAction(new ObjectiveModel( 'passing')
     .addKR(new KeyResultStubbed(0, krResolver))

@@ -5,19 +5,23 @@ import {connect} from "react-redux";
 import ObjectiveModel from "../common/Objective"
 import {State} from "./State";
 import {TextEditable} from "./TextEditable";
-import {editObjectiveDescriptionAction} from "./redux/ObjectiveReducer";
+import {editObjectiveDescriptionAction, addKeyResultToObjectiveAction} from "./redux/ObjectiveReducer";
+import {addKeyResultAction} from "./redux/KeyResultsReducer";
+import {KeyResultInMem} from "../common/KeyResult";
 
 interface ObjectiveComponentProps {
   description: string;
   krIds: number[];
   hideKRs?: boolean;
   editDescription: (newDescription: string) => void;
+  addKeyResult: () => void;
 }
 class ObjectiveComponent extends React.Component<ObjectiveComponentProps, {hideKRs: boolean}> {
   constructor(props: ObjectiveComponentProps) {
     super(props);
     this.hideKeyResults = this.hideKeyResults.bind(this);
     this.showKeyResults = this.showKeyResults.bind(this);
+    this.addKeyResult = this.addKeyResult.bind(this);
     this.state = {hideKRs: props.hideKRs ? props.hideKRs : false}
   }
 
@@ -25,6 +29,10 @@ class ObjectiveComponent extends React.Component<ObjectiveComponentProps, {hideK
   objectiveLabelCSS = {display:'inline'};
   descriptionCSS = {display:'inline'};
   toggleCSS = {display:'inline', position:'relative' as 'relative', left:'3px', top:'5px'};
+
+  addKeyResult(): void {
+    this.props.addKeyResult()
+  }
 
   hideKeyResults(): void {
     this.setState({hideKRs: true})
@@ -66,7 +74,13 @@ class ObjectiveComponent extends React.Component<ObjectiveComponentProps, {hideK
           <div style={{display: 'inline'}}>
             <ul className={'keyResults'}>
               {this.keyResultComponents()}
-              <i className="material-icons" style={{position: 'relative', left:'-30px', top:'6px'}}> add </i>
+              <i
+                  className="material-icons"
+                  style={{position: 'relative', left:'-30px', top:'6px'}}
+                  onClick={this.addKeyResult}
+              >
+                add
+              </i>
             </ul>
           </div>
       );
@@ -99,6 +113,10 @@ class ObjectiveComponent extends React.Component<ObjectiveComponentProps, {hideK
 interface ObjectiveContainerProps {
   id: number;
 }
+interface DispatchProps {
+  editDescription: (a: string) => void;
+  addKeyResult: () => void;
+}
 
 class ObjectiveContainerMethods {
   static mapStateToProps = (state: State, ownProps: ObjectiveContainerProps): ObjectiveModel => {
@@ -106,9 +124,14 @@ class ObjectiveContainerMethods {
     return Object.assign({}, objective, objective.getKRs());
   };
 
-  static mapDispatchToProps = (dispatch: Dispatch, ownProps: ObjectiveContainerProps): {editDescription: (a: string) => void} => {
+  static mapDispatchToProps = (dispatch: Dispatch, ownProps: ObjectiveContainerProps): DispatchProps => {
     return {
-      editDescription: (newDescription: string) => dispatch(editObjectiveDescriptionAction(ownProps.id, newDescription))
+      editDescription: (newDescription: string) => dispatch(editObjectiveDescriptionAction(ownProps.id, newDescription)),
+      addKeyResult: () => {
+        const kr = new KeyResultInMem(0,'');
+        dispatch(addKeyResultAction(kr));
+        dispatch(addKeyResultToObjectiveAction(ownProps.id, kr.toStubbed()));
+      }
     };
   };
 }
