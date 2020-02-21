@@ -136,7 +136,7 @@ class ObjectiveContainerMethods {
   };
 }
 
-const Objective = connect<ObjectiveModel, {editDescription: (a: string) => void}, ObjectiveContainerProps, State>(
+const Objective = connect<ObjectiveModel, DispatchProps, ObjectiveContainerProps, State>(
     ObjectiveContainerMethods.mapStateToProps,
     ObjectiveContainerMethods.mapDispatchToProps
 )(ObjectiveComponent);
