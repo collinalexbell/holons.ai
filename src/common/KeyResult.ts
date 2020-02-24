@@ -47,8 +47,20 @@ class KeyResultInMem {
   _score: number;
   _description: string;
 
-  constructor(score: number, description: string) {
-    this._id = getNewId();
+  static fromObj(kr: {id: ID; score: number; description: string}) {
+    return new KeyResultInMem(kr.score, kr.description, kr.id)
+  }
+
+  static fromInterface(kr: KeyResult) {
+    return new KeyResultInMem(kr.score(), kr.description(), kr.id());
+  }
+
+  constructor(score: number, description: string, id?: ID) {
+    if(id){
+      this._id = id;
+    } else {
+      this._id = getNewId();
+    }
     this._score = score;
     this._description = description;
   }
@@ -75,6 +87,10 @@ class KeyResultInMem {
 
   toStubbed(): KeyResultStubbed {
     return new KeyResultStubbed(this._id, () => this)
+  }
+
+  toJSON(): string {
+    return JSON.stringify({id: this.id(), description: this.description(), score: this.score()});
   }
 }
 

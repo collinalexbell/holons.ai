@@ -1,9 +1,13 @@
 import express from 'express';
 import path from 'path';
 import {wire} from './routes';
+import {connect} from './MongoAdapter'
 
+connect();
 const app = express();
 const port = 4242;
+
+app.use(express.json());
 
 app.get('/', (req: express.Request, res: express.Response) => {
   console.log('bar');

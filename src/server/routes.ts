@@ -1,4 +1,6 @@
 import {Request, Response} from "express";
+import KeyResultModel from './KeyResult'
+import KeyResult, {KeyResultInMem} from "../common/KeyResult";
 
 enum Method {GET, POST}
 
@@ -43,9 +45,21 @@ class ExpressRoute implements Route{
 }
 
 const defaultRoutes: Route[] = [
-    new ExpressRoute(Method.GET, "/keyResult", function(req, res){
-      res.send("hello world");
+    new ExpressRoute(Method.GET, "/keyResult/:id", function(req, res){
+      const kr = KeyResultModel.get(parseInt(req.params['id']));
+      kr.then((kr) => {
+        const krInMem = KeyResultInMem.fromInterface(kr);
+        res.set('Content-Type', 'text/json');
+        res.send(krInMem.toJSON())
+      })
     }),
+
+    new ExpressRoute(Method.POST, "/keyResult", function(req, res) {
+      const kr = KeyResultInMem.fromObj(req.body);
+      KeyResultModel.save(kr);
+      res.status(200);
+      res.send("ok");
+    })
 ];
 
 function wire(app: App, routes: Route[] = defaultRoutes): void {
