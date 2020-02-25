@@ -1,6 +1,8 @@
 import {Request, Response} from "express";
 import KeyResultModel from './KeyResult'
 import KeyResult, {KeyResultInMem} from "../common/KeyResult";
+import {ObjectiveInMem} from "../common/Objective";
+import ObjectiveModel from "./Objective"
 
 enum Method {GET, POST}
 
@@ -46,19 +48,41 @@ class ExpressRoute implements Route{
 
 const defaultRoutes: Route[] = [
     new ExpressRoute(Method.GET, "/keyResult/:id", function(req, res){
-      const kr = KeyResultModel.get(parseInt(req.params['id']));
+      const kr = KeyResultModel.get(req.params['id']);
       kr.then((kr) => {
         const krInMem = KeyResultInMem.fromInterface(kr);
         res.set('Content-Type', 'text/json');
         res.send(krInMem.toJSON())
-      })
+      }).catch(() => res.send('{}'))
     }),
 
     new ExpressRoute(Method.POST, "/keyResult", function(req, res) {
       const kr = KeyResultInMem.fromObj(req.body);
-      KeyResultModel.save(kr);
-      res.status(200);
-      res.send("ok");
+      const saved = KeyResultModel.save(kr);
+      saved.then((dbKR) => {
+        res.status(200);
+        res.set("Content-Type", "text/json");
+        res.send(dbKR.toJSON())
+      }).catch((reason) => res.send(reason))
+    }),
+
+    new ExpressRoute(Method.POST, "/objective", function(req, res) {
+      const objective = ObjectiveInMem.fromObj(req.body);
+      const saved = ObjectiveModel.save(objective);
+      saved.then((dbObjective) => {
+        res.status(200) ;
+        res.set("Content-Type", "text/json");
+        res.send(dbObjective.toJSON());
+      }).catch((reason) => res.send(reason));
+    }),
+
+    new ExpressRoute(Method.GET, "/objective/:id", function(req, res){
+      const objective = ObjectiveModel.get(req.params['id']);
+      objective.then((objective) => {
+        const objectiveInMem = ObjectiveInMem.fromInterface(objective);
+        res.set('Content-Type', 'text/json');
+        res.send(objectiveInMem.toJSON())
+      }).catch(() => res.send('{}'))
     })
 ];
 

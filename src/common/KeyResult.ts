@@ -1,10 +1,4 @@
-type ID = number
-
-let id = -1;
-
-function getNewId(): number {
-  return ++id;
-}
+type ID = string
 
 interface KeyResult {
   id(): ID;
@@ -13,12 +7,12 @@ interface KeyResult {
   description(): string;
 }
 
-type ResolveById = (id: number) => KeyResult;
+type ResolveById = (id: ID) => KeyResult;
 class KeyResultStubbed {
   model = "KeyResult";
   _id: ID;
   resolve: ResolveById;
-  constructor(id: number, unstubResolver: ResolveById) {
+  constructor(id: ID, unstubResolver: ResolveById) {
     this._id = id;
     this.resolve = unstubResolver;
   }
@@ -59,7 +53,7 @@ class KeyResultInMem {
     if(id){
       this._id = id;
     } else {
-      this._id = getNewId();
+      this._id = '';
     }
     this._score = score;
     this._description = description;

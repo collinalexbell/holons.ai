@@ -18,7 +18,7 @@ export class KeyResultMongo implements KeyResultInterface {
 }
 
 async function get(id: KrId): Promise<KeyResultMongo> {
-  const query  = KeyResultModel.findOne({id: id});
+  const query  = KeyResultModel.findById(id);
   const doc = await query.exec();
   if(doc instanceof KeyResultModel) {
     return Promise.resolve(new KeyResultMongo(doc as KeyResultSchema));
@@ -26,9 +26,13 @@ async function get(id: KrId): Promise<KeyResultMongo> {
   return Promise.reject()
 }
 
-function save(kr: KeyResultInterface): void {
-  const krModel = new KeyResultModel({id: kr.id(), score: kr.score(), description: kr.description()});
-  krModel.save()
+function save(kr: KeyResultInterface): Promise<Document> {
+  const doc = {"_id": kr.id(), score: kr.score(), description: kr.description()};
+  if(doc._id === "") {
+    delete doc._id;
+  }
+  const krModel = new KeyResultModel(doc);
+  return krModel.save()
 }
 
 export default {get, save}
