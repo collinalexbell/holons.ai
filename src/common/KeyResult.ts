@@ -1,5 +1,11 @@
 type ID = string
 
+export interface KeyResultObject {
+  id: ID;
+  score: number;
+  description: string;
+}
+
 interface KeyResult {
   id(): ID;
   score(): number;
@@ -7,12 +13,19 @@ interface KeyResult {
   description(): string;
 }
 
+class EmptyKeyResult implements KeyResult{
+  id(): ID {return ""}
+  score(): number {return 0}
+  updateScore(): void {return}
+  description(): string {return ""}
+}
+
 type ResolveById = (id: ID) => KeyResult;
 class KeyResultStubbed {
   model = "KeyResult";
   _id: ID;
   resolve: ResolveById;
-  constructor(id: ID, unstubResolver: ResolveById) {
+  constructor(id: ID, unstubResolver: ResolveById = (): KeyResult => new EmptyKeyResult()) {
     this._id = id;
     this.resolve = unstubResolver;
   }

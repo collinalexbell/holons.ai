@@ -67,6 +67,7 @@ const defaultRoutes: Route[] = [
     }),
 
     new ExpressRoute(Method.POST, "/objective", function(req, res) {
+      console.log(req.body)
       const objective = ObjectiveInMem.fromObj(req.body);
       const saved = ObjectiveModel.save(objective);
       saved.then((dbObjective) => {

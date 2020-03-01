@@ -1,3 +1,4 @@
+import  {KeyResultStubbed} from "../common/KeyResult"
 import KeyResult from "./KeyResult";
 
 type ID = string
@@ -17,11 +18,13 @@ class ObjectiveInMem implements Objective{
     this._keyResults = [];
   }
 
-  static fromObj(obj: {id?: ID; description: string}): Objective {
+  static fromObj(obj: {id?: ID; description: string; keyResults: string[]}): Objective {
     const objective = new ObjectiveInMem(obj.description);
     if(obj.id) {
       objective.setID(obj.id);
     }
+    obj.keyResults.forEach(id => objective.addKR(new KeyResultStubbed(id)))
+    console.log(objective)
     return objective;
   }
 
@@ -67,7 +70,7 @@ class ObjectiveInMem implements Objective{
   }
 
   keyResults(): KeyResult[] {
-    return [];
+    return this._keyResults;
   }
   toJSON(): string {
     return JSON.stringify({id: this.id(), description: this.description()});
